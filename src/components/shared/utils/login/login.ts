@@ -1,41 +1,50 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import { website_name } from '@/utils/site-config';
+import { domain_app_ids, getAppId } from '../config/config';
+import { CookieStorage, isStorageSupported, LocalStore } from '../storage/storage';
+import { getStaticUrl, urlForCurrentDomain } from '../url';
+import { deriv_urls } from '../url/constants';
 
-function Login() {
-  // State hooks for storing user input
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState('');
-
-  // Function to handle login
-  const handleLogin = async (event) => {
-    event.preventDefault(); // Prevent default form submission behavior
-    setLoading(true);
-    setError('');
-    setSuccess('');
-
-    try {
-      // Replace this URL with the actual third-party API endpoint
-      const response = await axios.post('https://third-party-api.com/login', {
-        email,
-        password,
-      });
-
-      // On successful login, handle the response accordingly
-      if (response.status === 200) {
-        setSuccess('Login Successful!');
-        // You can also save the authentication token here if necessary
-        // localStorage.setItem('authToken', response.data.token);
-      }
-    } catch (err) {
-      setError('Login failed. Please check your credentials.');
-    } finally {
-      setLoading(false);
+export const redirectToLogin = (is_logged_in: boolean, language: string, has_params = true, redirect_delay = 0) => {
+    if (!is_logged_in && isStorageSupported(sessionStorage)) {
+        const l = window.location;
+        const redirect_url = has_params ? window.location.href : `${l.protocol}//${l.host}${l.pathname}`;
+        sessionStorage.setItem('redirect_url', redirect_url);
+        setTimeout(() => {
+            const new_href = loginUrl({ language });
+            window.location.href = new_href;
+        }, redirect_delay);
     }
-  };
+    };
 
-}
+export const redirectToSignUp = () => {
+    window.open(getStaticUrl('/signup/'));
+};
 
-export default Login;
+type TLoginUrl = {
+    language: string;
+};
+
+export const loginUrl = ({ language }: TLoginUrl) => {
+    const server_url = LocalStore.get('config.server_url');
+    const signup_device_cookie = new (CookieStorage as any)('signup_device');
+    const signup_device = signup_device_cookie.get('signup_device');
+    const date_first_contact_cookie = new (CookieStorage as any)('date_first_contact');
+    const date_first_contact = date_first_contact_cookie.get('date_first_contact');
+    const marketing_queries = `${signup_device ? `&signup_device=${signup_device}` : ''}${
+        date_first_contact ? `&date_first_contact=${date_first_contact}` : ''
+    }`;
+    const getOAuthUrl = () => {
+        return `https://oauth.${
+            deriv_urls.DERIV_HOST_NAME
+        }/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
+    };
+
+    if (server_url && /qa/.test(server_url)) {
+        return `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
+    }
+
+    if (getAppId() === domain_app_ids[window.location.hostname as keyof typeof domain_app_ids]) {
+        return getOAuthUrl();
+    }
+    return urlForCurrentDomain(getOAuthUrl());
+};
