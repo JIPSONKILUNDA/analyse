@@ -89,21 +89,35 @@ const AppHeader = observer(() => {
                         }}
                     >
                         <Localize i18n_default_text='Log in' />
-                    </Button>
+                
                     <Button
                         primary
                         onClick={() => {
                             window.open(standalone_routes.signup);
                         }}
                     >
-                        <Localize i18n_default_text='67042' />
+                        <Localize i18n_default_text='Sign up' />
                     </Button>
                 </div>
-            );
-        }
-    };
+            
 
-    
+    return (
+        <Header
+            className={clsx('app-header', {
+                'app-header--desktop': isDesktop,
+                'app-header--mobile': !isDesktop,
+            })}
+        >
+            <Wrapper variant='left'>
+                <AppLogo />
+                <MobileMenu />
+                {isDesktop && <MenuItems.TradershubLink />}
+                {isDesktop && <PlatformSwitcher />}
+                {isDesktop && <MenuItems />}
+            </Wrapper>
+            <Wrapper variant='right'>{renderAccountSection()}</Wrapper>
+        </Header>
+    );
 });
 
 export default AppHeader;
