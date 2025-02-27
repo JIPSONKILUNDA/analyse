@@ -4,8 +4,7 @@ import { CookieStorage, isStorageSupported, LocalStore } from '../storage/storag
 import { getStaticUrl, urlForCurrentDomain } from '../url';
 import { deriv_urls } from '../url/constants';
 
-{
-    export const redirectToLogin = (is_logged_in: boolean, language: string, has_params = true, redirect_delay = 0) => {
+export const redirectToLogin = (is_logged_in: boolean, language: string, has_params = true, redirect_delay = 0) => {
     if (!is_logged_in && isStorageSupported(sessionStorage)) {
         const l = window.location;
         const redirect_url = has_params ? window.location.href : `${l.protocol}//${l.host}${l.pathname}`;
@@ -15,8 +14,7 @@ import { deriv_urls } from '../url/constants';
             window.location.href = new_href;
         }, redirect_delay);
     }
-    }
-};
+    };
 
 export const redirectToSignUp = () => {
     window.open(getStaticUrl('/signup/'));
