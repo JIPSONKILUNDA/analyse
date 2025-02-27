@@ -37,7 +37,7 @@ export const loginUrl = ({ language }: TLoginUrl) => {
 
     const getOAuthUrl = () => {
         return `https://oauth.${
-            deriv_urls.DERIV_HOST_NAME
+            deriv_urls DERIV_HOST_NAME
         }/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
     };
 
