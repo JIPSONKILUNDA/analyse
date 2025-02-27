@@ -83,14 +83,13 @@ const AppHeader = observer(() => {
                                 window.location.replace(generateOAuthURL());
                             } else {
                                 await requestOidcAuthentication({
-                                    redirectCallbackUri: `${window.location.origin}/callback`,
-                                    </Button>
+                                    redirectCallbackUri: ${window.location.origin}/callback,
                                 });
                             }
                         }}
-                    > 
-                      <Localize i18n_default_text='Log in' />
-            
+                    >
+                        <Localize i18n_default_text='Log in' />
+                    </Button>
                     <Button
                         primary
                         onClick={() => {
@@ -100,7 +99,9 @@ const AppHeader = observer(() => {
                         <Localize i18n_default_text='Sign up' />
                     </Button>
                 </div>
-            
+            );
+        }
+    };
 
     return (
         <Header
