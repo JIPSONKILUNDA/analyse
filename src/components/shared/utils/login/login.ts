@@ -18,6 +18,11 @@ export const redirectToLogin = (is_logged_in: boolean, language: string, has_par
 
 export const redirectToSignUp = () => {
     window.open(getStaticUrl('/signup/'));
+};
+
+type TLoginUrl = {
+    language: string;
+};
 
 export const loginUrl = ({ language }: TLoginUrl) => {
     const server_url = LocalStore.get('config.server_url');
@@ -34,7 +39,7 @@ export const loginUrl = ({ language }: TLoginUrl) => {
         }/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
     };
 
-    if (server_url && /qa/.test(server_url)) {
+    if (server_url /qa/.test(server_url)) {
         return `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
     }
 
