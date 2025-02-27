@@ -14,7 +14,7 @@ export const redirectToLogin = (is_logged_in: boolean, language: string, has_par
             window.location.href = new_href;
         }, redirect_delay);
     }
-    };
+  };
 
 export const redirectToSignUp = () => {
     window.open(getStaticUrl('/signup/'));
