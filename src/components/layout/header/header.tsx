@@ -84,12 +84,13 @@ const AppHeader = observer(() => {
                             } else {
                                 await requestOidcAuthentication({
                                     redirectCallbackUri: `${window.location.origin}/callback`,
+                                    </Button>
                                 });
                             }
                         }}
-                    >
-                        <Localize i18n_default_text='Log in' />
-                
+                    > 
+                      <Localize i18n_default_text='Log in' />
+            
                     <Button
                         primary
                         onClick={() => {
