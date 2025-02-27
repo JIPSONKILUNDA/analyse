@@ -25,8 +25,7 @@ type TLoginUrl = {
 };
 
 export const loginUrl = ({ language }: TLoginUrl) => {
-    window.localStorage.setItem('config.server_url', 'ws.derivws.com');
-    const server_url = 'ws.derivws.com';
+    const server_url = LocalStore.get('config.server_url');
     const signup_device_cookie = new (CookieStorage as any)('signup_device');
     const signup_device = signup_device_cookie.get('signup_device');
     const date_first_contact_cookie = new (CookieStorage as any)('date_first_contact');
@@ -37,7 +36,7 @@ export const loginUrl = ({ language }: TLoginUrl) => {
 
     const getOAuthUrl = () => {
         return `https://oauth.${
-            deriv_urls DERIV_HOST_NAME
+            deriv_urls.DERIV_HOST_NAME
         }/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
     };
 
