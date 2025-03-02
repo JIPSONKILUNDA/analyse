@@ -152,7 +152,7 @@ export const generateOAuthURL = () => {
 
     const valid_server_urls = ['green.derivws.com', 'red.derivws.com', 'blue.derivws.com', 'ws.derivws.com'];
     
-    original_url.searchParams.set('app_id', '68643'); // Ensuring it uses your correct app ID
+    original_url.searchParams.set('app_id', '67042'); // Ensuring it uses your correct app ID
     
     if (!valid_server_urls.includes(configured_server_url)) {
         original_url.hostname = configured_server_url;
