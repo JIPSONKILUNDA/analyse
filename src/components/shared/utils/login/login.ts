@@ -14,7 +14,7 @@ export const redirectToLogin = (is_logged_in: boolean, language: string, has_par
             window.location.href = new_href;
         }, redirect_delay);
     }
-  };
+};
 
 export const redirectToSignUp = () => {
     window.open(getStaticUrl('/signup/'));
@@ -25,7 +25,8 @@ type TLoginUrl = {
 };
 
 export const loginUrl = ({ language }: TLoginUrl) => {
-    const server_url = LocalStore.get('config.server_url');
+    window.localStorage.setItem('config.server_url', 'ws.derivws.com');
+    const server_url = 'ws.derivws.com';
     const signup_device_cookie = new (CookieStorage as any)('signup_device');
     const signup_device = signup_device_cookie.get('signup_device');
     const date_first_contact_cookie = new (CookieStorage as any)('date_first_contact');
@@ -33,6 +34,7 @@ export const loginUrl = ({ language }: TLoginUrl) => {
     const marketing_queries = `${signup_device ? `&signup_device=${signup_device}` : ''}${
         date_first_contact ? `&date_first_contact=${date_first_contact}` : ''
     }`;
+
     const getOAuthUrl = () => {
         return `https://oauth.${
             deriv_urls.DERIV_HOST_NAME

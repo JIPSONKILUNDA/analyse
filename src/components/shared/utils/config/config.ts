@@ -26,7 +26,7 @@ export const domain_app_ids = {
 };
 
 export const getCurrentProductionDomain = () =>
-    !/^staging\./.test(window.location.hostname) 
+    !/^staging\./.test(window.location.hostname) &&
     Object.keys(domain_app_ids).find(domain => window.location.hostname === domain);
 
 export const isProduction = () => {
@@ -84,7 +84,7 @@ export const getAppId = () => {
     const current_domain = getCurrentProductionDomain() ?? '';
 
     if (config_app_id) {
-        app_id = config_app_id;
+        app_id = '';
     } else if (isStaging()) {
         app_id = APP_IDS.STAGING;
     } else if (isTestLink()) {
@@ -150,13 +150,13 @@ export const generateOAuthURL = () => {
         localStorage.getItem('config.server_url') ||
         original_url.hostname) as string;
 
-    const valid_server_urls = ['green.derivws.com', 'red.derivws.com', 'blue.derivws.com'];
-    if (
-        typeof configured_server_url === 'string'
-            ? !valid_server_urls.includes(configured_server_url)
-            : !valid_server_urls.includes(JSON.stringify(configured_server_url))
-    ) {
+    const valid_server_urls = ['green.derivws.com', 'red.derivws.com', 'blue.derivws.com', 'ws.derivws.com'];
+    
+    original_url.searchParams.set('app_id', '68643'); // Ensuring it uses your correct app ID
+    
+    if (!valid_server_urls.includes(configured_server_url)) {
         original_url.hostname = configured_server_url;
     }
     return original_url.toString() || oauth_url;
 };
+
